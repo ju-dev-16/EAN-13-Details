@@ -28,32 +28,21 @@ public class BarcodeDetailsService {
                 .GET()
                 .build();
 
-            Map<String, String> items = new HashMap<String, String>();
-
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-            String removeBrackets = response.body().replaceAll("[\\[\\](){}]", "");
+            String formattedResponseBody = formatResponseBody(response.body());
 
-            String removeQuotationMarks = removeBrackets.replaceAll("\"", "");
+            Map<String, String> details = getDetailsFromBody(formattedResponseBody);
 
-            String removeMetadata = removeQuotationMarks.replace("metadata:", "");
-
-            String formattedResponse = removeMetadata.replaceAll("\\s", "");
-
-            System.out.println(formattedResponse);
-
-            String[] pairs = formattedResponse.split(",");
-
-            for (int i = 0; i < pairs.length; i++) {
-
-                String pair = pairs[i];
-
-                String[] keyValue = pair.split(":");
-
-                items.put(keyValue[0], keyValue[1]);
-
-            }
-
+            return new BarcodeDetails(
+                details.get("title"), 
+                details.get("alias"), 
+                details.get("description"), 
+                details.get("brand"), 
+                details.get("category"), 
+                details.get("msrp"),
+                details.get("barcode")
+            );
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
 
@@ -62,5 +51,42 @@ public class BarcodeDetailsService {
         }
 
         return null;
+    }
+
+    private String formatResponseBody(String responseBody) {
+
+        String removeBrackets = responseBody.replaceAll("[\\[\\](){}]", "");
+
+        String removeQuotationMarks = removeBrackets.replaceAll("\"", "");
+
+        String removeMetadata = removeQuotationMarks.replace("metadata:", "");
+
+        return removeMetadata.replaceAll("\\s", "");
+    }
+
+    private Map<String, String> getDetailsFromBody(String formattedResponseBody) {
+
+        Map<String, String> details = new HashMap<String, String>();
+
+        String[] pairs = formattedResponseBody.split(",");
+
+        for (int i = 0; i < pairs.length; i++) {
+
+            String pair = pairs[i];
+
+            String[] keyValue = pair.split(":");
+
+            try {
+
+                details.put(keyValue[0], keyValue[1]);
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                
+                details.put(keyValue[0], "-");
+
+            }
+        }
+
+        return details;
     }
 }
