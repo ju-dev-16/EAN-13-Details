@@ -21,4 +21,5 @@ public class BarcodeDetails {
     private String msrp;
 
     private String barcode;
+    
 }

@@ -24,15 +24,13 @@ public class BarcodeDetailsService {
         try {
 
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(config.getBaseUrl() + barcode + "?apikey=" + config.getApiToken()))
+                .uri(new URI(config.getBaseUrl() + barcode + "?apikey=" + config.getApiKey()))
                 .GET()
                 .build();
 
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-            String formattedResponseBody = formatResponseBody(response.body());
-
-            Map<String, String> details = getDetailsFromBody(formattedResponseBody);
+            Map<String, String> details = getDetailsFromBody(formatResponseBody(response.body()));
 
             return new BarcodeDetails(
                 details.get("title"), 
@@ -50,7 +48,15 @@ public class BarcodeDetailsService {
 
         }
 
-        return null;
+        return new BarcodeDetails(
+            "-", 
+            "-", 
+            "-", 
+            "-", 
+            "-", 
+            "-",
+            "-"
+        );
     }
 
     private String formatResponseBody(String responseBody) {
@@ -78,7 +84,15 @@ public class BarcodeDetailsService {
 
             try {
 
-                details.put(keyValue[0], keyValue[1]);
+                if (keyValue[1] == "null") {
+
+                    details.put(keyValue[0], "-");
+
+                } else {
+
+                    details.put(keyValue[0], keyValue[1]);
+                    
+                }
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 

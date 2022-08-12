@@ -34,18 +34,18 @@
         </nav>
 
         <div class="container">
-            <ul class="list-group list-group-flush mb-4">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
+            <ul class="list-group list-group-flush mb-3 d-flex">
+                <span class="mt-1">Title</span> <li class="list-group-item" th:text="${DETAILS.title}" />
+                <span class="mt-1">Alias</span> <li class="list-group-item" th:text="${DETAILS.alias}" />
+                <span class="mt-1">Description</span> <li class="list-group-item" th:text="${DETAILS.description}" />
+                <span class="mt-1">Brand</span> <li class="list-group-item" th:text="${DETAILS.brand}" />
+                <span class="mt-1">Category</span> <li class="list-group-item" th:text="${DETAILS.category}" />
+                <span class="mt-1">MSRP</span> <li class="list-group-item" th:text="${DETAILS.msrp}" />
+                <span class="mt-1">Barcode</span> <li class="list-group-item" th:text="${DETAILS.barcode}" />
             </ul>
-            <div class="container">
-                <button type="button" class="btn btn-primary fw-bold fs-5" onclick="window.location.replace('http://localhost:8080');">
-                    Go back
-                </button>
-            </div>
+            <button type="button" class="btn btn-primary fw-bold fs-5" onclick="window.location.replace('http://localhost:8080');">
+                 Go back
+            </button>
         </div>
     </div>
 

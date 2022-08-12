@@ -33,16 +33,24 @@
             </div>
         </nav>
 
-        <div class="p-5 mb-5 rounded-3 bg-light" bis_skin_checked="1">
+        <div class="p-5 mb-5 rounded-3 bg-light" bis_skin_checked="1" th:if="${ISVALID == 'is valid.' || ISVALID == 'is unvalid.'}">
             <div class="d-flex">
                 <div class="container-fluid" bis_skin_checked="1">
                     <h1 class="display-5 fw-bold fs-sm-2">The Barcode: <h1 th:text="${BARCODE}" class="display-5 fs-sm-2" /></h1>
                     <p th:text="${ISVALID}" class="col-md-8 fs-4 fs-lg-5 fs-xs-1" />
-                    <button class="btn btn-primary btn-lg fw-bold" type="button">Show more</button>
+                    <form action="#" th:action="@{/details}" th:object="${USER_INPUT}" method="post">
+                        <input type="text" th:field="*{barcode}" value="${USER_INPUT.barcode}" class="d-none" >
+                        <button th:if="${ISVALID == 'is valid.'}" class="btn btn-primary btn-lg fw-bold" type="submit">
+                            Show more
+                        </button>
+                    </form>
                 </div>
                 <div class="container-fluid" bis_skin_checked="1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="${FILL}" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                        <path th:d="${ICON}"/>
+                    <svg th:if="${ISVALID == 'is valid.'}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="lightgreen" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    <svg th:if="${ISVALID == 'is unvalid.'}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="red" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
                     </svg>
                 </div>
             </div>
@@ -56,7 +64,7 @@
                         <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
                     </svg>
                     </span>
-                    <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" id="barcodeField" class="form-control ps-3 me-2" onfocus="this.value = ''">
+                    <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" class="form-control ps-3 me-2" onfocus="this.value = ''">
                 </div>
 
                 <button type="submit" class="btn btn-primary fw-bold fs-5">
