@@ -8,6 +8,14 @@
     <link rel="icon" type="image/x-icon" href="/img/barcode-icon.svg">
 </head>
 
+<style>
+    @media only screen and (max-width: 768px) {
+        #icon-container {
+            display: none;
+        }
+    }
+</style>
+
 <body>
 
     <div class="container mt-2">
@@ -33,7 +41,7 @@
             </div>
         </nav>
 
-        <div class="p-5 mb-5 rounded-3 bg-light" bis_skin_checked="1" th:if="${ISVALID == 'is valid.' || ISVALID == 'is unvalid.'}">
+        <div class="p-5 mb-5 rounded-3 bg-light overflow-hidden" bis_skin_checked="1" th:if="${ISVALID == 'is valid.' || ISVALID == 'is unvalid.'}">
             <div class="d-flex">
                 <div class="container-fluid" bis_skin_checked="1">
                     <h1 class="display-5 fw-bold fs-sm-2">The Barcode: <h1 th:text="${BARCODE}" class="display-5 fs-sm-2" /></h1>
@@ -45,7 +53,7 @@
                         </button>
                     </form>
                 </div>
-                <div class="container-fluid" bis_skin_checked="1">
+                <div class="container-fluid" id="icon-container" bis_skin_checked="1">
                     <svg th:if="${ISVALID == 'is valid.'}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="lightgreen" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                     </svg>
@@ -57,20 +65,25 @@
         </div>
 
         <div class="d-flex align-items-center justify-content-center mb-5">
-            <form action="#" th:action="@{/}" th:object="${USER_INPUT}" method="post" class="d-flex d-xs-none w-50 w-md-25 w-xs-50">
-                <div class="input-group" bis_skin_checked="1">
-                    <span id="basic-addon1" class="input-group-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-upc" viewBox="0 0 16 16">
-                        <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
-                    </svg>
-                    </span>
-                    <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" class="form-control ps-3 me-2" onfocus="this.value = ''">
+            <div class="row">
+                <div class="col-12">
+                    <form action="#" th:action="@{/}" th:object="${USER_INPUT}" method="post" class="d-flex w-100 w-75">
+                        <div class="input-group w-75" bis_skin_checked="1">
+                            <span id="basic-addon1" class="input-group-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-upc" viewBox="0 0 16 16">
+                                <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                            </svg>
+                            </span>
+                            <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" class="form-control ps-3 me-2" onfocus="this.value = ''">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary fw-bold fs-5">
+                            Submit
+                        </button>
+                    </form> 
                 </div>
 
-                <button type="submit" class="btn btn-primary fw-bold fs-5">
-                    Submit
-                </button>
-            </form>            
+            </div>  
         </div>
     </div>
 
