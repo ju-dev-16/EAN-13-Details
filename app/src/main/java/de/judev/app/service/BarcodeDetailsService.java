@@ -10,12 +10,17 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.judev.app.config.Config;
+import org.springframework.beans.factory.annotation.Value;
+
 import de.judev.app.model.BarcodeDetails;
 
 public class BarcodeDetailsService {
 
-    Config config = new Config();
+    @Value("${baseUrl}")
+    private String baseUrl;
+
+    @Value("${apiKey}")
+    private String apiKey;
 
     public BarcodeDetails getBarcodeDetails(String barcode) {
         
@@ -24,7 +29,7 @@ public class BarcodeDetailsService {
         try {
 
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(config.getBaseUrl() + barcode + "?apikey=" + config.getApiKey()))
+                .uri(new URI(baseUrl + barcode + "?apikey=" + apiKey))
                 .GET()
                 .build();
 

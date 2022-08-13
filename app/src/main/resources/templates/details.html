@@ -8,6 +8,14 @@
     <link rel="icon" type="image/x-icon" href="/img/barcode-icon.svg">
 </head>
 
+<style>
+    @media only screen and (max-width: 768px) {
+        #details {
+            overflow: scroll;
+        }
+    }
+</style>
+
 <body>
 
     <div class="container mt-2">
@@ -34,7 +42,7 @@
         </nav>
 
         <div class="container">
-            <ul class="list-group list-group-flush mb-3 d-flex overflow-scroll" style="width: 100%;">
+            <ul class="list-group list-group-flush mb-3 d-flex" id="details" style="width: 100%;">
                 <span class="mt-1">Title</span> <li class="list-group-item" th:text="${DETAILS.title}" />
                 <span class="mt-1">Alias</span> <li class="list-group-item" th:text="${DETAILS.alias}" />
                 <span class="mt-1">Description</span> <li class="list-group-item" th:text="${DETAILS.description}" />
@@ -44,7 +52,7 @@
                 <span class="mt-1">Barcode</span> <li class="list-group-item" th:text="${DETAILS.barcode}" />
             </ul>
             <button type="button" class="btn btn-primary fw-bold fs-5" onclick="window.location.replace('http://localhost:8080');">
-                 Go back
+                Go back
             </button>
         </div>
     </div>

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import de.judev.app.model.BarcodeDetails;
+import de.judev.app.model.User;
 import de.judev.app.model.UserInput;
 import de.judev.app.service.BarcodeDetailsService;
 import de.judev.app.service.BarcodeValidatorService;
@@ -14,6 +15,8 @@ import de.judev.app.service.BarcodeValidatorService;
 @Controller
 public class MainController {
     
+    private User user;
+
     private UserInput userInput;
     private String isValid;
 
@@ -21,6 +24,8 @@ public class MainController {
     private BarcodeDetailsService detailsService;
 
     public MainController() {
+
+        this.user = new User();
 
         this.userInput = new UserInput();
         this.isValid = "";
@@ -31,6 +36,8 @@ public class MainController {
 
     @GetMapping("/")
     public String showHome(Model model) {
+
+        model.addAttribute("USER", this.user);
 
         model.addAttribute("USER_INPUT", this.userInput);
         model.addAttribute("BARCODE", this.userInput.getBarcode());
@@ -54,6 +61,14 @@ public class MainController {
             this.isValid = "is unvalid.";
 
         }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/sign-in")
+    public String signIn(@ModelAttribute("USER") User user) {
+
+        this.user = user;
 
         return "redirect:/";
     }
