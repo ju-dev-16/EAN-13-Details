@@ -3,7 +3,7 @@ package de.judev.app.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.judev.app.model.Barcode;
+import de.judev.app.data.Barcode;
 import de.judev.app.service.helper.Converter;
 
 public class BarcodeValidatorService {

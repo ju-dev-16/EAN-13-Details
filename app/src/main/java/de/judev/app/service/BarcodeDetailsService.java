@@ -12,18 +12,18 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import de.judev.app.model.BarcodeDetails;
+import de.judev.app.data.BarcodeDetails;
 
 public class BarcodeDetailsService {
 
-    @Value("${baseUrl}")
+    @Value("${base.url}")
     private String baseUrl;
-
-    @Value("${apiKey}")
+    
+    @Value("${api.key}")
     private String apiKey;
 
     public BarcodeDetails getBarcodeDetails(String barcode) {
-        
+
         HttpClient client = HttpClient.newHttpClient();
 
         try {

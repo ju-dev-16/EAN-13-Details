@@ -6,39 +6,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import de.judev.app.model.BarcodeDetails;
-import de.judev.app.model.User;
-import de.judev.app.model.UserInput;
+import de.judev.app.data.AuthRequest;
+import de.judev.app.data.BarcodeDetails;
+import de.judev.app.data.UserInput;
 import de.judev.app.service.BarcodeDetailsService;
 import de.judev.app.service.BarcodeValidatorService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
+
+    // private final UserService service;
+    private final BarcodeValidatorService validatorService = new BarcodeValidatorService();
+    private final BarcodeDetailsService detailsService = new BarcodeDetailsService();
+
+    private AuthRequest authRequest = new AuthRequest();
+    private UserInput userInput = new UserInput();
     
-    private User user;
-
-    private UserInput userInput;
-    private String isValid;
-
-    private BarcodeValidatorService validatorService;
-    private BarcodeDetailsService detailsService;
-
-    public MainController() {
-
-        this.user = new User();
-
-        this.userInput = new UserInput();
-        this.isValid = "";
-
-        this.validatorService = new BarcodeValidatorService();
-        this.detailsService = new BarcodeDetailsService();
-    }
+    private boolean isValid = false;
 
     @GetMapping("/")
     public String showHome(Model model) {
 
-        model.addAttribute("USER", this.user);
-
+        model.addAttribute("AUTH_REQUEST", this.authRequest);
         model.addAttribute("USER_INPUT", this.userInput);
         model.addAttribute("BARCODE", this.userInput.getBarcode());
 
@@ -48,27 +39,11 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public String validateFormData(Model model, @ModelAttribute("USER_INPUT") UserInput userInput) {
+    public String validateBarcode(Model model, @ModelAttribute("USER_INPUT") UserInput userInput) {
 
         this.userInput = userInput;
 
-        if (validatorService.validateBarcode(this.userInput.getBarcode()).isValid()) {
-
-            this.isValid = "is valid.";
-
-        } else {
-
-            this.isValid = "is unvalid.";
-
-        }
-
-        return "redirect:/";
-    }
-
-    @PostMapping("/sign-in")
-    public String signIn(@ModelAttribute("USER") User user) {
-
-        this.user = user;
+        this.isValid = validatorService.validateBarcode(this.userInput.getBarcode()).isValid();
 
         return "redirect:/";
     }
