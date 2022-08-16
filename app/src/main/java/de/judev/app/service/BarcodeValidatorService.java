@@ -3,9 +3,12 @@ package de.judev.app.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import de.judev.app.data.Barcode;
 import de.judev.app.service.helper.Converter;
 
+@Service
 public class BarcodeValidatorService {
  
     private final Converter converter = new Converter();

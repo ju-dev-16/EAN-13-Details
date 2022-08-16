@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
     // private final UserService service;
-    private final BarcodeValidatorService validatorService = new BarcodeValidatorService();
-    private final BarcodeDetailsService detailsService = new BarcodeDetailsService();
+    private final BarcodeValidatorService validatorService;
+    private final BarcodeDetailsService detailsService;
 
     private AuthRequest authRequest = new AuthRequest();
     private UserInput userInput = new UserInput();
@@ -56,5 +56,19 @@ public class MainController {
         model.addAttribute("DETAILS", details);
 
         return "details";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("AUTH_REQUEST") AuthRequest authRequest) {
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/login-error")
+    public String loginError(Model model) {
+
+        model.addAttribute("loginError", true);
+
+        return "home";
     }
 }

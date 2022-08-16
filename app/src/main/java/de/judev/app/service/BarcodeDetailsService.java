@@ -2,7 +2,6 @@ package de.judev.app.service;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -11,9 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import de.judev.app.data.BarcodeDetails;
 
+@Service
 public class BarcodeDetailsService {
 
     @Value("${base.url}")
@@ -26,12 +27,12 @@ public class BarcodeDetailsService {
 
         HttpClient client = HttpClient.newHttpClient();
 
-        try {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(baseUrl + barcode + "?apikey=" + apiKey))
+            .GET()
+            .build();
 
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(baseUrl + barcode + "?apikey=" + apiKey))
-                .GET()
-                .build();
+        try {
 
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
@@ -47,7 +48,7 @@ public class BarcodeDetailsService {
                 details.get("barcode")
             );
 
-        } catch (URISyntaxException | IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
 
             e.printStackTrace();
 
