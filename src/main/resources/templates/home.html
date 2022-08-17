@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>EAN-13 Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="/img/barcode-icon.svg">
+</head>
+
+<style>
+    @media only screen and (max-width: 768px) {
+        #icon-container {
+            display: none;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="container mt-2">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light mb-4">
+            <div class="container-fluid">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-upc d-inline-block align-text-top" viewBox="0 0 16 16">
+                    <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                </svg>
+                <a class="navbar-brand fs-2" href="/">EAN-13 Details</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active fs-4" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled fs-4" href="#" tabindex="-1" aria-disabled="true">Download</a>
+                        </li>
+                        <li class="nav-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <a class="nav-link active fs-4" aria-current="page" href="#">Sign in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="p-5 mb-5 rounded-3 bg-light overflow-hidden" bis_skin_checked="1" th:if="${USER_INPUT.barcode != ''}">
+            <div class="d-flex">
+                <div class="container-fluid" bis_skin_checked="1">
+                    <h1 class="display-5 fw-bold fs-sm-2">The Barcode: <h1 th:text="${BARCODE}" class="display-5 fs-sm-2" /></h1>
+                    <p th:if="${ISVALID}" class="col-md-8 fs-4 fs-lg-5 fs-xs-1">
+                        is valid.
+                    </p>
+                    <p th:if="${!ISVALID}" class="col-md-8 fs-4 fs-lg-5 fs-xs-1">
+                        is unvalid.
+                    </p>
+                    <form action="#" th:action="@{/details}" th:object="${USER_INPUT}" method="post">
+                        <input type="text" th:field="*{barcode}" value="${USER_INPUT.barcode}" class="d-none" >
+                        <button th:if="${ISVALID}" class="btn btn-primary btn-lg fw-bold" type="submit">
+                            Show more
+                        </button>
+                    </form>
+                </div>
+                <div class="container-fluid" id="icon-container" bis_skin_checked="1">
+                    <svg th:if="${ISVALID}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="lightgreen" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    <svg th:if="${!ISVALID}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="red" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center mb-5">
+            <div class="row">
+                <div class="col-12">
+                    <form action="#" th:action="@{/}" th:object="${USER_INPUT}" method="post" class="d-flex w-100 w-75">
+                        <div class="input-group w-75" bis_skin_checked="1">
+                            <span id="basic-addon1" class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-upc" viewBox="0 0 16 16">
+                                    <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                                </svg>
+                            </span>
+                            <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" class="form-control ps-3 me-2" onfocus="this.value = ''">
+                        </div>
+                        <button type="submit" class="btn btn-primary fw-bold fs-5">
+                            Submit
+                        </button>
+                    </form> 
+                </div>
+            </div>  
+        </div>
+
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Sign in</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" th:action="@{/login}" th:object="${AUTH_REQUEST}" method="post">
+                    <div class="modal-body">
+                        <p th:if="${loginError}" class="error">Wrong user or password</p>
+                        <div class="input-group" bis_skin_checked="1">
+                            <span id="basic-addon2" class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                                </svg>
+                            </span>
+                            <input type="email" th:field="*{email}" placeholder="Email" class="form-control ps-3" required autofocus>
+                        </div>
+                        <br>
+                        <div class="input-group" bis_skin_checked="1">
+                            <span id="basic-addon3" class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                                </svg>
+                            </span>
+                            <input type="password" th:field="*{password}" placeholder="Password" class="form-control ps-3" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+                      <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form> 
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
