@@ -88,7 +88,7 @@
                                     <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
                                 </svg>
                             </span>
-                            <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" min="13" max="13" class="form-control ps-3 me-2" autofocus>
+                            <input type="text" th:field="*{barcode}" placeholder="Enter your barcode" maxlength="13" class="form-control ps-3 me-2" autofocus>
                         </div>
                         <button type="submit" class="btn btn-primary fw-bold fs-5">
                             Submit
@@ -110,7 +110,6 @@
                 </div>
                 <form action="#" th:action="@{/auth/login}" th:object="${AUTH_REQUEST}" method="post">
                     <div class="modal-body">
-                        <p th:if="${loginError}" class="error">Wrong user or password</p>
                         <div class="input-group" bis_skin_checked="1">
                             <span id="basic-addon2" class="input-group-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
@@ -126,7 +125,7 @@
                                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
                                 </svg>
                             </span>
-                            <input type="password" th:field="*{password}" placeholder="Password" class="form-control ps-3" required>
+                            <input type="password" th:field="*{password}" maxlength="60" placeholder="Password" class="form-control ps-3" required>
                         </div>
                         <div class="mt-2 text-center">
                             No account? <a href="#" class="text-dark" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">SIGN UP</a>
@@ -166,7 +165,7 @@
                                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
                                 </svg>
                             </span>
-                            <input type="password" th:field="*{password}" placeholder="Password" class="form-control ps-3" required>
+                            <input type="password" th:field="*{password}" maxlength="60" placeholder="Password" class="form-control ps-3" required>
                         </div>
                         <div class="mt-2 text-center">
                             You have an account? <a href="#" class="text-dark" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">SIGN IN</a>

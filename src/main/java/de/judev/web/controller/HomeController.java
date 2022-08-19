@@ -36,19 +36,19 @@ public class HomeController {
 
         if (!authentication.getName().equals("anonymousUser")) {
 
-            String username;
+            String email;
 
             if (authentication.getPrincipal() instanceof UserDetails) {
     
-                username = ((UserDetails) authentication.getPrincipal()).getUsername();
+                email = ((UserDetails) authentication.getPrincipal()).getUsername();
     
             } else {
     
-                username = authentication.getPrincipal().toString();
+                email = authentication.getPrincipal().toString();
     
             }
     
-            model.addAttribute("LOOKUPS", userService.findUserByEmail(username).getLookups());
+            model.addAttribute("LOOKUPS", userService.findUserByEmail(email).getLookups());
 
         }
 

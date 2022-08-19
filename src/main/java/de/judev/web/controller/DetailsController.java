@@ -1,7 +1,7 @@
 package de.judev.web.controller;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,9 +26,21 @@ public class DetailsController {
     @PostMapping
     public String showDetails(Model model, @ModelAttribute("USER_INPUT") InputModel inputModel) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        UserEntity user = userService.findUserByEmail(auth.getName());
+        String email;
+
+        if (principal instanceof UserDetails) {
+
+            email = ((UserDetails) principal).getUsername();
+
+        } else {
+
+            email = principal.toString();
+
+        }
+
+        UserEntity user = userService.findUserByEmail(email);
 
         if (user.getLookups() == 0) {
             return "redirect:/";

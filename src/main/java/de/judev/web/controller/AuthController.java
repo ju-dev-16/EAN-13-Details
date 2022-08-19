@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,10 +16,12 @@ import de.judev.web.entity.UserEntity;
 import de.judev.web.model.UserModel;
 import de.judev.web.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/auth")
 @AllArgsConstructor
+@Slf4j
 public class AuthController {
     
     private final UserRepository userRepository;
@@ -47,12 +51,22 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
 
-        authenticationManager.authenticate(
+        log.info("TEST1");
+
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userModel.getEmail(),
                         userModel.getPassword()
                 )
         );
+
+        log.info("TEST2");
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        log.info("TEST3");
+
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
 
         return "redirect:/";
     }
