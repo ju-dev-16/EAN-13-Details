@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import de.judev.web.service.UserService;
+import de.judev.web.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserLookupsConfig {
     
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Scheduled(fixedRate = 3600000L)
     public void handleLookups() {

@@ -11,7 +11,7 @@ import de.judev.web.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    List<UserEntity> findAllUsers();
+    List<UserEntity> findAll();
 
     Optional<UserEntity> findUserByEmail(String email);
     

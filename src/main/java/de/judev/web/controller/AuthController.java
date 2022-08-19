@@ -6,8 +6,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.judev.web.entity.UserEntity;
 import de.judev.web.model.UserModel;
@@ -15,6 +16,7 @@ import de.judev.web.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
 @Controller
+@RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthController {
     
@@ -25,7 +27,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public String register(@RequestAttribute UserModel userModel) {
+    public String register(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
 
         Optional<UserEntity> userOptional = userRepository.findUserByEmail(userModel.getEmail());
 
@@ -43,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestAttribute UserModel userModel) {
+    public String login(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

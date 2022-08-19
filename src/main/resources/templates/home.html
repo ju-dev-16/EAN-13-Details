@@ -54,12 +54,18 @@
                     <p th:if="${!ISVALID}" class="col-md-8 fs-4 fs-lg-5 fs-xs-1">
                         is unvalid.
                     </p>
-                    <form action="#" th:action="@{/details}" th:object="${USER_INPUT}" method="post">
-                        <input type="text" th:field="*{barcode}" value="${USER_INPUT.barcode}" class="d-none" >
-                        <button th:if="${ISVALID}" class="btn btn-primary btn-lg fw-bold" type="submit">
+                    <div th:if="${ISVALID}">
+                        <form action="#" th:action="@{/details}" th:object="${USER_INPUT}" method="post" sec:authorize="isAuthenticated()">
+                            <input type="text" th:field="*{barcode}" value="${USER_INPUT.barcode}" class="d-none" >
+                            <button class="btn btn-primary btn-lg fw-bold" type="submit">
+                                Show more
+                            </button>
+                        </form>
+                        <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             Show more
                         </button>
-                    </form>
+                    </div>
+
                 </div>
                 <div class="container-fluid" id="icon-container" bis_skin_checked="1">
                     <svg th:if="${ISVALID}" xmlns="http://www.w3.org/2000/svg" width="200" height="200" th:fill="lightgreen" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
@@ -88,6 +94,9 @@
                             Submit
                         </button>
                     </form> 
+                    <div sec:authorize="isAuthenticated()">
+                        Lookups left today: <span th:text="${LOOKUPS}" />
+                    </div>
                 </div>
             </div>  
         </div>
@@ -96,10 +105,10 @@
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Sign in</h5>
+                  <h5 class="modal-title" id="staticBackdropLabel">Enter your email and password to login</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" th:action="@{/login}" th:object="${AUTH_REQUEST}" method="post">
+                <form action="#" th:action="@{/auth/login}" th:object="${AUTH_REQUEST}" method="post">
                     <div class="modal-body">
                         <p th:if="${loginError}" class="error">Wrong user or password</p>
                         <div class="input-group" bis_skin_checked="1">
@@ -119,10 +128,53 @@
                             </span>
                             <input type="password" th:field="*{password}" placeholder="Password" class="form-control ps-3" required>
                         </div>
+                        <div class="mt-2 text-center">
+                            No account? <a href="#" class="text-dark" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">SIGN UP</a>
+                        </div>
+                        
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
                       <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form> 
+              </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Enter your email and password to register</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="#" th:action="@{/auth/register}" th:object="${AUTH_REQUEST}" method="post">
+                    <div class="modal-body">
+                        <div class="input-group" bis_skin_checked="1">
+                            <span id="basic-addon2" class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                                </svg>
+                            </span>
+                            <input type="email" th:field="*{email}" placeholder="Email" class="form-control ps-3" required autofocus>
+                        </div>
+                        <br>
+                        <div class="input-group" bis_skin_checked="1">
+                            <span id="basic-addon3" class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                                </svg>
+                            </span>
+                            <input type="password" th:field="*{password}" placeholder="Password" class="form-control ps-3" required>
+                        </div>
+                        <div class="mt-2 text-center">
+                            You have an account? <a href="#" class="text-dark" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">SIGN IN</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+                      <button type="submit" class="btn btn-primary">Sign up</button>
                     </div>
                 </form> 
               </div>

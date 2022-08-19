@@ -28,5 +28,5 @@ public class UserEntity {
     @JsonIgnore
     private String password;
 
-    private int lookups = 0;
+    private int lookups = 5;
 }
