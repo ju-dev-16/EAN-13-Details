@@ -2,11 +2,11 @@ package de.judev.web.controller;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.judev.web.entity.UserEntity;
 import de.judev.web.model.InputModel;
@@ -14,7 +14,7 @@ import de.judev.web.service.BarcodeDetailsService;
 import de.judev.web.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequestMapping("/details")
 @RequiredArgsConstructor
 public class DetailsController {

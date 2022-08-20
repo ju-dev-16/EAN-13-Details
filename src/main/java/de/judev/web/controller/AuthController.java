@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import de.judev.web.entity.UserEntity;
 import de.judev.web.model.UserModel;
 import de.judev.web.repository.UserRepository;
+import de.judev.web.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/auth")
 @AllArgsConstructor
-@Slf4j
 public class AuthController {
     
     private final UserRepository userRepository;
@@ -29,6 +28,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public String register(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
@@ -51,7 +52,7 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
 
-        log.info("TEST1");
+        System.out.println("Test");
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,13 +61,15 @@ public class AuthController {
                 )
         );
 
-        log.info("TEST2");
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        log.info("TEST3");
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
 
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        System.out.println("Test2");
+
+        System.out.println(jwtTokenProvider.generateToken(authentication));
+
+        System.out.println("Test3");
 
         return "redirect:/";
     }
