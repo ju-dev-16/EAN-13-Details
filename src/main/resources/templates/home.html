@@ -55,10 +55,10 @@
                         is unvalid.
                     </p>
                     <div th:if="${ISVALID}">
-                        <button sec:authorize="isAuthenticated()" onclick="await postBarcode()" class="btn btn-primary btn-lg fw-bold" type="button">
+                        <button onclick="postBarcode()" class="btn btn-primary btn-lg fw-bold" type="button">
                             Show more
                         </button>
-                        <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <button type="button" class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             Show more
                         </button>
                     </div>
@@ -182,8 +182,8 @@
     <script th:inline="javascript">
 
         async function postBarcode() {
-            const barcode = "[$USER_INPUT.barcode]]";
-            const { token } = document.cookie;
+            const barcode = /*[[${USER_INPUT.barcode}]]*/ 'defaultanyvalue';
+            const token = getCookieValue("token");
 
             await fetch("http://localhost:8080/details", {
                 method: "POST",
@@ -191,8 +191,13 @@
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + token
                 },
+                redirect: 'follow',
                 body: JSON.stringify({ barcode })
             });
+        }
+
+        const getCookieValue = (name) => {
+            return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '';
         }
 
     </script>

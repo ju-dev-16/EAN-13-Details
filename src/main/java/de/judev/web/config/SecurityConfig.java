@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/img/**")
+                .antMatchers("/favicon")
                 .permitAll()
                 .antMatchers("/")
                 .permitAll()

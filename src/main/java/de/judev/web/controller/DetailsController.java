@@ -1,10 +1,12 @@
 package de.judev.web.controller;
 
+import java.io.IOException;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +26,7 @@ public class DetailsController {
     private final UserServiceImpl userService;
 
     @PostMapping
-    public String showDetails(Model model, @ModelAttribute("USER_INPUT") InputModel inputModel) {
+    public String showDetails(Model model, @RequestBody InputModel inputModel) throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

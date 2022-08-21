@@ -2,6 +2,9 @@ package de.judev.web.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,9 +53,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
-
-        System.out.println("Test");
+    public String login(@ModelAttribute("AUTH_REQUEST") UserModel userModel, HttpServletResponse response) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -63,13 +64,11 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+        Cookie cookie = new Cookie("token", jwtTokenProvider.generateToken(authentication));
 
-        System.out.println("Test2");
+        cookie.setPath("/");
 
-        System.out.println(jwtTokenProvider.generateToken(authentication));
-
-        System.out.println("Test3");
+        response.addCookie(cookie);
 
         return "redirect:/";
     }
