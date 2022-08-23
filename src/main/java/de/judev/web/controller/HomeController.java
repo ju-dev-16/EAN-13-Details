@@ -49,7 +49,6 @@ public class HomeController {
             }
     
             model.addAttribute("LOOKUPS", userService.findUserByEmail(email).getLookups());
-
         }
 
         model.addAttribute("AUTH_REQUEST", this.userModel);
@@ -65,6 +64,10 @@ public class HomeController {
     public String validateBarcode(Model model, @ModelAttribute("USER_INPUT") InputModel inputModel) {
 
         this.inputModel = inputModel;
+
+        if (this.inputModel.getBarcode().isEmpty()) {
+            return "redirect:/";
+        }
 
         this.isValid = validatorService.validateBarcode(this.inputModel.getBarcode()).isValid();
 

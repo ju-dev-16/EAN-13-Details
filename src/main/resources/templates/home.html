@@ -36,9 +36,19 @@
                         <li class="nav-item">
                             <a class="nav-link disabled fs-4" href="#" tabindex="-1" aria-disabled="true">Download</a>
                         </li>
-                        <li class="nav-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            <a class="nav-link active fs-4" aria-current="page" href="#">Sign in</a>
-                        </li>
+                        <div sec:authorize="!isAuthenticated()">
+                            <li class="nav-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <a class="nav-link active fs-4" aria-current="page" href="#">Sign in</a>
+                            </li>
+                        </div> 
+                        <div sec:authorize="isAuthenticated()">
+                            <li class="nav-item">
+                                <a class="nav-link active fs-4" aria-current="page" href="javascript: document.logoutForm.submit()">Sign out</a>
+                            </li>
+                            <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                <input hidden type="submit" value="Sign Out"/>
+                            </form> 
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -55,12 +65,19 @@
                         is unvalid.
                     </p>
                     <div th:if="${ISVALID}">
-                        <button onclick="postBarcode()" class="btn btn-primary btn-lg fw-bold" type="button">
-                            Show more
-                        </button>
-                        <button type="button" class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            Show more
-                        </button>
+                        <div sec:authorize="isAuthenticated()">
+                            <form action="#" th:action="@{/details}" th:object="${USER_INPUT}" method="post">
+                                <input hidden type="text" th:field="*{barcode}">
+                                <button class="btn btn-primary btn-lg fw-bold" type="submit">
+                                    Show more
+                                </button>
+                            </form>
+                        </div>
+                        <div sec:authorize="!isAuthenticated()">
+                            <button type="button" class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Show more
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="container-fluid" id="icon-container" bis_skin_checked="1">
@@ -104,15 +121,21 @@
                   <h5 class="modal-title" id="staticBackdropLabel">Enter your email and password to login</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" th:action="@{/auth/login}" th:object="${AUTH_REQUEST}" method="post">
+                <form action="#" th:action="@{/login}" method="post">
                     <div class="modal-body">
+                        <div th:if="${param.error}" class="alert alert-error">
+                            Invalid username and password.
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-success">
+                            You have been logged out.
+                        </div>
                         <div class="input-group" bis_skin_checked="1">
                             <span id="basic-addon2" class="input-group-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
                                     <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                                 </svg>
                             </span>
-                            <input type="email" th:field="*{email}" placeholder="Email" class="form-control ps-3" required autofocus>
+                            <input type="email" id="email" name="email" placeholder="Email" class="form-control ps-3" required autofocus>
                         </div>
                         <br>
                         <div class="input-group" bis_skin_checked="1">
@@ -121,12 +144,11 @@
                                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
                                 </svg>
                             </span>
-                            <input type="password" th:field="*{password}" maxlength="60" placeholder="Password" class="form-control ps-3" required>
+                            <input type="password" id="password" name="password" maxlength="60" placeholder="Password" class="form-control ps-3" required>
                         </div>
                         <div class="mt-2 text-center">
                             No account? <a href="#" class="text-dark" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">SIGN UP</a>
                         </div>
-                        
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
@@ -144,7 +166,7 @@
                   <h5 class="modal-title" id="staticBackdropLabel">Enter your email and password to register</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" th:action="@{/auth/register}" th:object="${AUTH_REQUEST}" method="post">
+                <form action="#" th:action="@{/register}" th:object="${AUTH_REQUEST}" method="post">
                     <div class="modal-body">
                         <div class="input-group" bis_skin_checked="1">
                             <span id="basic-addon2" class="input-group-text">
@@ -178,29 +200,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-
-    <script th:inline="javascript">
-
-        async function postBarcode() {
-            const barcode = /*[[${USER_INPUT.barcode}]]*/ 'defaultanyvalue';
-            const token = getCookieValue("token");
-
-            await fetch("http://localhost:8080/details", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token
-                },
-                redirect: 'follow',
-                body: JSON.stringify({ barcode })
-            });
-        }
-
-        const getCookieValue = (name) => {
-            return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '';
-        }
-
-    </script>
 
 </body>
 
