@@ -53,10 +53,10 @@ public class SecurityConfig {
                 .loginPage("/login").permitAll()
                 .usernameParameter("email")
                 .defaultSuccessUrl("/")
-                .failureUrl("/#")
+                .failureUrl("/?error=true")
                 .permitAll()
             .and()
-            .logout().logoutSuccessUrl("/#").permitAll();
+            .logout().logoutSuccessUrl("/?logout=true").permitAll();
 
         return http.build();
     }

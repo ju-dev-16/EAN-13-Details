@@ -45,7 +45,7 @@ public class DetailsController {
         UserEntity user = userService.findUserByEmail(email);
 
         if (user.getLookups() == 0) {
-            return "redirect:/";
+            return "redirect:/?lookups=error";
         }
 
         model.addAttribute("DETAILS", detailsService.getBarcodeDetails(inputModel.getBarcode()));
