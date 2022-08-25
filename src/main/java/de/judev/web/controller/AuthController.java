@@ -23,10 +23,14 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@ModelAttribute("AUTH_REQUEST") UserModel userModel) {
 
+        if (userRepository.count() == 20) {
+            return "redirect:/?max";
+        }
+
         Optional<UserEntity> userOptional = userRepository.findUserByEmail(userModel.getEmail());
 
         if (userOptional.isPresent()) {
-            return "redirect:/";
+            return "redirect:/?present";
         }
 
         UserEntity user = new UserEntity();

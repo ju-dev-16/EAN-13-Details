@@ -113,11 +113,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                     <div th:if="${param.error}" class="alert alert-danger mt-2 d-flex justify-content-between">
-                        <span>Invalid username and password.</span>
+                        <span>Invalid username or password.</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                     <div th:if="${param.logout}" class="alert alert-success mt-2 d-flex justify-content-between">
                         <span>You have been logged out.</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                    </div>
+                    <div th:if="${param.max}" class="alert alert-danger mt-2 d-flex justify-content-between">
+                        <span>The max. amount of user has been reached.</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                    </div>
+                    <div th:if="${param.present}" class="alert alert-danger mt-2 d-flex justify-content-between">
+                        <span>This user is already present.</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                 </div>
